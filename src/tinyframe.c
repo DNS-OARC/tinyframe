@@ -50,6 +50,47 @@ static inline void _put32(void* ptr, uint32_t v)
     memcpy(ptr, &be_v, sizeof(be_v));
 }
 
+static inline enum tinyframe_result __read_control(struct tinyframe_reader* handle, const uint8_t* data, size_t len)
+{
+    if (len < 12) {
+        return tinyframe_need_more;
+    }
+    handle->control.length = _need32(data); // "escape"
+    if (handle->control.length) {
+        return tinyframe_error;
+    }
+    handle->control.length = _need32(data + 4); // length
+    if (handle->control.length > TINYFRAME_CONTROL_FRAME_LENGTH_MAX) {
+        return tinyframe_error;
+    }
+    handle->control.type = _need32(data + 8); // type
+
+    switch (handle->control.type) {
+    case TINYFRAME_CONTROL_ACCEPT:
+    case TINYFRAME_CONTROL_START:
+    case TINYFRAME_CONTROL_READY:
+        break;
+    case TINYFRAME_CONTROL_STOP:
+        return tinyframe_stopped;
+    case TINYFRAME_CONTROL_FINISH:
+        return tinyframe_finished;
+    default:
+        return tinyframe_error;
+    }
+
+    // "escape" and length are not included in length, if not just type
+    // then we have control fields
+    if (handle->control.length > 4) {
+        handle->state          = tinyframe_control_field;
+        handle->control_length = handle->control.length - 4; // - type length
+    } else {
+        handle->state = tinyframe_frame;
+    }
+
+    handle->bytes_read = 12;
+    return tinyframe_have_control;
+}
+
 enum tinyframe_result tinyframe_read(struct tinyframe_reader* handle, const uint8_t* data, size_t len)
 {
     assert(handle);
@@ -57,43 +98,7 @@ enum tinyframe_result tinyframe_read(struct tinyframe_reader* handle, const uint
 
     switch (handle->state) {
     case tinyframe_control:
-        if (len < 12) {
-            return tinyframe_need_more;
-        }
-        handle->control.length = _need32(data); // "escape"
-        if (handle->control.length) {
-            return tinyframe_error;
-        }
-        handle->control.length = _need32(data + 4); // length
-        if (handle->control.length > TINYFRAME_CONTROL_FRAME_LENGTH_MAX) {
-            return tinyframe_error;
-        }
-        handle->control.type = _need32(data + 8); // type
-
-        switch (handle->control.type) {
-        case TINYFRAME_CONTROL_ACCEPT:
-        case TINYFRAME_CONTROL_START:
-        case TINYFRAME_CONTROL_READY:
-            break;
-        case TINYFRAME_CONTROL_STOP:
-            return tinyframe_stopped;
-        case TINYFRAME_CONTROL_FINISH:
-            return tinyframe_finished;
-        default:
-            return tinyframe_error;
-        }
-
-        // "escape" and length are not included in length, if not just type
-        // then we have control fields
-        if (handle->control.length > 4) {
-            handle->state          = tinyframe_control_field;
-            handle->control_length = handle->control.length - 4; // - type length
-        } else {
-            handle->state = tinyframe_frame;
-        }
-
-        handle->bytes_read = 12;
-        return tinyframe_have_control;
+        return __read_control(handle, data, len);
 
     case tinyframe_control_field:
         if (len < 8) {
@@ -134,9 +139,8 @@ enum tinyframe_result tinyframe_read(struct tinyframe_reader* handle, const uint
         }
         handle->frame.length = _need32(data);
         if (!handle->frame.length) {
-            handle->state      = tinyframe_control;
-            handle->bytes_read = 0;
-            return tinyframe_again;
+            handle->state = tinyframe_control;
+            return __read_control(handle, data, len);
         }
 
         if (len - 4 < handle->frame.length) {

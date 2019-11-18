@@ -111,7 +111,6 @@ struct tinyframe_writer {
 enum tinyframe_result {
     tinyframe_ok,
     tinyframe_error,
-    tinyframe_again,
     tinyframe_have_control,
     tinyframe_have_control_field,
     tinyframe_have_frame,
