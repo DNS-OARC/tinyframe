@@ -201,6 +201,11 @@ enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer* hand
     return tinyframe_ok;
 }
 
+void tinyframe_set_header(uint8_t* frame, size_t frame_length)
+{
+    _put32(frame, frame_length);
+}
+
 /*
 
 frame:
