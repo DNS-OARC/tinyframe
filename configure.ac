@@ -1,5 +1,9 @@
 AC_PREREQ(2.61)
 AC_INIT([tinyframe], [0.1.0], [todo@dns-oarc.net], [tinyframe], [https://github.com/DNS-OARC/tinyframe/issues])
+AC_SUBST([TINYFRAME_VERSION_MAJOR], [0000])
+AC_SUBST([TINYFRAME_VERSION_MINOR], [0001])
+AC_SUBST([TINYFRAME_VERSION_PATCH], [0000])
+AC_SUBST([TINYFRAME_LIBRARY_VERSION], [0:0:0])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([src/tinyframe.c])
 AC_CONFIG_HEADER([src/config.h])
@@ -43,5 +47,6 @@ AC_CONFIG_FILES([
 	libtinyframe.pc
     src/Makefile
     src/test/Makefile
+    src/tinyframe/tinyframe.h
 ])
 AC_OUTPUT
