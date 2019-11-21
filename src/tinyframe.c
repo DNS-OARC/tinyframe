@@ -157,6 +157,9 @@ enum tinyframe_result tinyframe_read(struct tinyframe_reader* handle, const uint
 
 enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer* handle, uint8_t* out, size_t len, const char* content_type, size_t content_type_len)
 {
+    if (content_type_len > TINYFRAME_CONTROL_FIELD_CONTENT_TYPE_LENGTH_MAX) {
+        return tinyframe_error;
+    }
     if (len < 12 + 8 + content_type_len) {
         return tinyframe_need_more;
     }
@@ -173,7 +176,7 @@ enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer* han
     return tinyframe_ok;
 }
 
-enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer* handle, uint8_t* out, size_t len, const uint8_t* data, size_t data_len)
+enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer* handle, uint8_t* out, size_t len, const uint8_t* data, uint32_t data_len)
 {
     if (len < 4 + data_len) {
         return tinyframe_need_more;
@@ -201,7 +204,7 @@ enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer* hand
     return tinyframe_ok;
 }
 
-void tinyframe_set_header(uint8_t* frame, size_t frame_length)
+void tinyframe_set_header(uint8_t* frame, uint32_t frame_length)
 {
     _put32(frame, frame_length);
 }

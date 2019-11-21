@@ -47,6 +47,6 @@ AC_CONFIG_FILES([
 	libtinyframe.pc
     src/Makefile
     src/test/Makefile
-    src/tinyframe/tinyframe.h
+    src/tinyframe/version.h
 ])
 AC_OUTPUT

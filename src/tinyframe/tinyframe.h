@@ -19,17 +19,13 @@
  * along with tinyframe library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <tinyframe/version.h>
+
 #include <unistd.h>
 #include <stdint.h>
 
 #ifndef __tinyframe_h_tinyframe
 #define __tinyframe_h_tinyframe 1
-
-#define TINYFRAME_VERSION @TINYFRAME_VERSION_MAJOR@@TINYFRAME_VERSION_MINOR@@TINYFRAME_VERSION_PATCH@
-#define TINYFRAME_VERSION_MAJOR @TINYFRAME_VERSION_MAJOR@
-#define TINYFRAME_VERSION_MINOR @TINYFRAME_VERSION_MINOR@
-#define TINYFRAME_VERSION_PATCH @TINYFRAME_VERSION_PATCH@
-#define TINYFRAME_VERSION_STRING "@PACKAGE_VERSION@"
 
 #define TINYFRAME_CONTROL_FRAME_LENGTH_MAX 512
 #define TINYFRAME_CONTROL_FIELD_CONTENT_TYPE_LENGTH_MAX 256
@@ -130,9 +126,9 @@ enum tinyframe_result {
 enum tinyframe_result tinyframe_read(struct tinyframe_reader*, const uint8_t*, size_t);
 
 enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer*, uint8_t*, size_t, const char*, size_t);
-enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer*, uint8_t*, size_t, const uint8_t*, size_t);
+enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer*, uint8_t*, size_t, const uint8_t*, uint32_t);
 enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer*, uint8_t*, size_t);
 
-void tinyframe_set_header(uint8_t*, size_t);
+void tinyframe_set_header(uint8_t*, uint32_t);
 
 #endif
