@@ -50,15 +50,15 @@ struct tinyframe_control {
     }
 
 struct tinyframe_control_field {
-    uint32_t       length;
     uint32_t       type;
+    uint32_t       length;
     const uint8_t* data;
 };
 
 #define TINYFRAME_CONTROL_FIELD_INITIALIZER \
     {                                       \
-        .length = 0,                        \
         .type   = 0,                        \
+        .length = 0,                        \
         .data   = 0,                        \
     }
 
@@ -84,7 +84,7 @@ enum tinyframe_state {
 struct tinyframe_reader {
     enum tinyframe_state state;
 
-    size_t control_length;
+    size_t control_length, control_length_left;
 
     struct tinyframe_control       control;
     struct tinyframe_control_field control_field;
@@ -93,14 +93,15 @@ struct tinyframe_reader {
     size_t bytes_read;
 };
 
-#define TINYFRAME_READER_INITIALIZER                           \
-    {                                                          \
-        .state          = tinyframe_control,                   \
-        .control_length = 0,                                   \
-        .control        = TINYFRAME_CONTROL_INITIALIZER,       \
-        .control_field  = TINYFRAME_CONTROL_FIELD_INITIALIZER, \
-        .frame          = TINYFRAME_INITIALIZER,               \
-        .bytes_read     = 0,                                   \
+#define TINYFRAME_READER_INITIALIZER                                \
+    {                                                               \
+        .state               = tinyframe_control,                   \
+        .control_length      = 0,                                   \
+        .control_length_left = 0,                                   \
+        .control             = TINYFRAME_CONTROL_INITIALIZER,       \
+        .control_field       = TINYFRAME_CONTROL_FIELD_INITIALIZER, \
+        .frame               = TINYFRAME_INITIALIZER,               \
+        .bytes_read          = 0,                                   \
     }
 
 struct tinyframe_writer {
@@ -125,10 +126,17 @@ enum tinyframe_result {
 
 enum tinyframe_result tinyframe_read(struct tinyframe_reader*, const uint8_t*, size_t);
 
+enum tinyframe_result tinyframe_write_control(struct tinyframe_writer*, uint8_t*, size_t, uint32_t, const struct tinyframe_control_field*, size_t);
+
 enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer*, uint8_t*, size_t, const char*, size_t);
 enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer*, uint8_t*, size_t, const uint8_t*, uint32_t);
 enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer*, uint8_t*, size_t);
 
 void tinyframe_set_header(uint8_t*, uint32_t);
+
+static inline size_t tinyframe_frame_size(size_t data_len)
+{
+    return 4 + data_len;
+}
 
 #endif
