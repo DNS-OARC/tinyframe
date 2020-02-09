@@ -31,6 +31,10 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
   AS_VAR_APPEND(LDFLAGS, [" $withval"])
 ])
 
+# Check --enable-trace
+AH_TEMPLATE([TINYFRAME_TRACE], [Defined if trace of Frame Streams is enabled])
+AC_ARG_ENABLE([trace], [AS_HELP_STRING([--enable-trace], [Enable trace output of Frame Streams])], [AC_DEFINE([TINYFRAME_TRACE])])
+
 # pkg-config
 PKG_INSTALLDIR
 

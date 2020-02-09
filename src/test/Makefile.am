@@ -10,4 +10,5 @@ EXTRA_DIST = $(TESTS)
 
 test1_SOURCES = test1.c
 test1_LDADD = ../libtinyframe.la
+test1_LDFLAGS = -static
 EXTRA_DIST += test.fstrm
