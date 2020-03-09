@@ -85,7 +85,9 @@ int main(int argc, const char* argv[])
                 fclose(fp);
                 return 0;
             default:
-                break;
+                printf("unexpected return code\n");
+                fclose(fp);
+                return 3;
             }
 
             if (r && h.bytes_read && h.bytes_read <= s) {
