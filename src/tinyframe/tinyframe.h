@@ -79,7 +79,9 @@ enum tinyframe_state {
     tinyframe_control,
     tinyframe_control_field,
     tinyframe_frame,
+    tinyframe_done,
 };
+extern const char* const tinyframe_state_string[];
 
 struct tinyframe_reader {
     enum tinyframe_state state;
@@ -114,15 +116,16 @@ struct tinyframe_writer {
     }
 
 enum tinyframe_result {
-    tinyframe_ok,
-    tinyframe_error,
-    tinyframe_have_control,
-    tinyframe_have_control_field,
-    tinyframe_have_frame,
-    tinyframe_stopped,
-    tinyframe_finished,
-    tinyframe_need_more,
+    tinyframe_ok                 = 0,
+    tinyframe_error              = 1,
+    tinyframe_have_control       = 2,
+    tinyframe_have_control_field = 3,
+    tinyframe_have_frame         = 4,
+    tinyframe_stopped            = 5,
+    tinyframe_finished           = 6,
+    tinyframe_need_more          = 7,
 };
+extern const char* const tinyframe_result_string[];
 
 enum tinyframe_result tinyframe_read(struct tinyframe_reader*, const uint8_t*, size_t);
 

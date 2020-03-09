@@ -67,11 +67,30 @@ static const char* printable_string(const uint8_t* data, size_t len)
 #define trace(x...)                                \
     fprintf(stderr, "tinyframe %s(): ", __func__); \
     fprintf(stderr, x);                            \
-    fprintf(stderr, "\n")
+    fprintf(stderr, "\n");                         \
+    fflush(stderr);
 #else
 #define trace(x...)
 #define printable_string(x...)
 #endif
+
+const char* const tinyframe_state_string[] = {
+    "control",
+    "control_field",
+    "frame",
+    "done",
+};
+
+const char* const tinyframe_result_string[] = {
+    "ok",
+    "error",
+    "have_control",
+    "have_control_field",
+    "have_frame",
+    "stopped",
+    "finished",
+    "need_more",
+};
 
 static inline uint32_t _need32(const void* ptr)
 {
@@ -94,12 +113,12 @@ static inline enum tinyframe_result __read_control(struct tinyframe_reader* hand
     }
     handle->control.length = _need32(data); // "escape"
     if (handle->control.length) {
-        trace("control length zero, error");
+        trace("control length !zero, error, header: %s", printable_string(data, 12));
         return tinyframe_error;
     }
     handle->control.length = _need32(data + 4); // length
     if (handle->control.length > TINYFRAME_CONTROL_FRAME_LENGTH_MAX) {
-        trace("control length > max, error");
+        trace("control length > max, error, header: %s", printable_string(data, 12));
         return tinyframe_error;
     }
     handle->control.type = _need32(data + 8); // type
@@ -110,8 +129,12 @@ static inline enum tinyframe_result __read_control(struct tinyframe_reader* hand
     case TINYFRAME_CONTROL_READY:
         break;
     case TINYFRAME_CONTROL_STOP:
+        handle->state      = tinyframe_done;
+        handle->bytes_read = 12;
         return tinyframe_stopped;
     case TINYFRAME_CONTROL_FINISH:
+        handle->state      = tinyframe_done;
+        handle->bytes_read = 12;
         return tinyframe_finished;
     default:
         trace("control type %d invalid, error", handle->control.type);
@@ -201,8 +224,11 @@ enum tinyframe_result tinyframe_read(struct tinyframe_reader* handle, const uint
 
         handle->frame.data = data + 4;
         handle->bytes_read = 4 + handle->frame.length;
-        trace("frame data: %s...", printable_string(data, handle->bytes_read > 20 ? 20 : handle->bytes_read));
+        trace("frame data [%zu]: %s...", handle->bytes_read, printable_string(data, handle->bytes_read > 20 ? 20 : handle->bytes_read));
         return tinyframe_have_frame;
+
+    case tinyframe_done:
+        break;
     }
 
     return tinyframe_error;
