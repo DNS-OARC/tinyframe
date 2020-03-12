@@ -73,8 +73,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*
 # %{_mandir}/man3/*
 %{_libdir}/libtinyframe.so
+%{_libdir}/pkgconfig/libtinyframe.pc
 %exclude %{_libdir}/libtinyframe.a
 %exclude %{_libdir}/libtinyframe.la
+%{_datadir}/doc/*
 
 
 %changelog
