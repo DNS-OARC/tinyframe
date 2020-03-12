@@ -8,7 +8,7 @@ SUBDIRS = src
 
 pkgconfig_DATA = libtinyframe.pc
 
-dist_doc_DATA = README.md
+dist_doc_DATA = README.md CHANGES COPYING COPYING.LESSER
 
 EXTRA_DIST = m4
 
