@@ -18,5 +18,5 @@ Description: Frame Streams encoder/decoder library
 Package: libtinyframe-dev
 Architecture: any
 Depends: libtinyframe0, ${misc:Depends}
-Description: Frame Streams encoder/decoder library
+Description: Frame Streams encoder/decoder library - development files
  Minimalistic library for encoding and decoding the Frame Streams protocol.
