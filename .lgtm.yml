@@ -1,0 +1,13 @@
+extraction:
+  cpp:
+    prepare:
+      packages:
+        - build-essential
+        - automake
+        - autoconf
+        - libtool
+        - pkg-config
+    configure:
+      command:
+        - ./autogen.sh
+        - ./configure
