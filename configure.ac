@@ -35,6 +35,15 @@ AC_ARG_WITH([extra-ldflags], [AS_HELP_STRING([--with-extra-ldflags=CFLAGS], [Add
 AH_TEMPLATE([TINYFRAME_TRACE], [Defined if trace of Frame Streams is enabled])
 AC_ARG_ENABLE([trace], [AS_HELP_STRING([--enable-trace], [Enable trace output of Frame Streams])], [AC_DEFINE([TINYFRAME_TRACE])])
 
+# Check --enable-gcov
+AC_ARG_ENABLE([gcov], [AS_HELP_STRING([--enable-gcov], [Enable coverage testing])], [
+  coverage_cflags="--coverage -g -O0 -fno-inline -fno-inline-small-functions -fno-default-inline"
+  AC_MSG_NOTICE([enabling coverage testing... $coverage_cflags])
+  AS_VAR_APPEND(CFLAGS, [" $coverage_cflags"])
+])
+AM_CONDITIONAL([ENABLE_GCOV], [test "x$enable_gcov" != "xno"])
+AM_EXTRA_RECURSIVE_TARGETS([gcov])
+
 # pkg-config
 PKG_INSTALLDIR
 
