@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = $(srcdir)/Makefile.in
 
-CLEANFILES = test*.log test*.trs test2.fstrm
+CLEANFILES = test*.log test*.trs test2.fstrm *.gcda *.gcno *.gcov
 
 AM_CFLAGS = -I$(top_srcdir)/src
 
@@ -16,3 +16,10 @@ EXTRA_DIST += test.fstrm
 test2_SOURCES = test2.c
 test2_LDADD = ../libtinyframe.la
 test2_LDFLAGS = -static
+
+if ENABLE_GCOV
+gcov-local:
+	for src in $(test1_SOURCES) $(test2_SOURCES); do \
+	  gcov -l -r -s "$(srcdir)" "$$src"; \
+	done
+endif
