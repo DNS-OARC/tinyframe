@@ -252,7 +252,18 @@ enum tinyframe_result tinyframe_write_control(struct tinyframe_writer* handle, u
     size_t   n;
     uint8_t* outp;
 
+    assert(handle);
+    assert(out);
+    assert(!num_fields || (num_fields && fields));
+
     for (n = 0; n < num_fields; n++) {
+        switch (fields[n].type) {
+        case TINYFRAME_CONTROL_FIELD_CONTENT_TYPE:
+            break;
+        default:
+            trace("field %zu type %d invalid, error", n, fields[n].type);
+            return tinyframe_error;
+        }
         if (fields[n].length > TINYFRAME_CONTROL_FIELD_CONTENT_TYPE_LENGTH_MAX) {
             trace("field %zu length > max, error", n);
             return tinyframe_error;
@@ -275,6 +286,7 @@ enum tinyframe_result tinyframe_write_control(struct tinyframe_writer* handle, u
         _put32(outp, fields[n].type);
         _put32(outp + 4, fields[n].length);
         if (fields[n].length) {
+            assert(fields[n].data);
             memcpy(outp + 8, fields[n].data, fields[n].length);
         }
         outp += 8 + fields[n].length;
@@ -287,6 +299,10 @@ enum tinyframe_result tinyframe_write_control(struct tinyframe_writer* handle, u
 
 enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer* handle, uint8_t* out, size_t len, const char* content_type, size_t content_type_len)
 {
+    assert(handle);
+    assert(out);
+    assert(content_type);
+
     if (content_type_len > TINYFRAME_CONTROL_FIELD_CONTENT_TYPE_LENGTH_MAX) {
         trace("field length > max, error");
         return tinyframe_error;
@@ -311,6 +327,10 @@ enum tinyframe_result tinyframe_write_control_start(struct tinyframe_writer* han
 
 enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer* handle, uint8_t* out, size_t len, const uint8_t* data, uint32_t data_len)
 {
+    assert(handle);
+    assert(out);
+    assert(data);
+
     if (len < 4 + data_len) {
         trace("not enought space, need more");
         return tinyframe_need_more;
@@ -326,6 +346,9 @@ enum tinyframe_result tinyframe_write_frame(struct tinyframe_writer* handle, uin
 
 enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer* handle, uint8_t* out, size_t len)
 {
+    assert(handle);
+    assert(out);
+
     if (len < 12) {
         trace("not enought space, need more");
         return tinyframe_need_more;
@@ -343,6 +366,8 @@ enum tinyframe_result tinyframe_write_control_stop(struct tinyframe_writer* hand
 
 void tinyframe_set_header(uint8_t* frame, uint32_t frame_length)
 {
+    assert(frame);
+
     _put32(frame, frame_length);
 }
 
