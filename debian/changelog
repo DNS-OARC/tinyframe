@@ -1,3 +1,30 @@
+tinyframe (0.1.1-1~unstable+1) unstable; urgency=low
+
+  * Release 0.1.1
+
+    This release adds a few assert check on augments to some of the function
+    calls, fixes a type in configure and adds coverage tests.
+
+    - `tinyframe_write_control()`:
+      - assert arguments and content fields data
+      - check for valid content field types
+    - `tinyframe_write_control_start()`: assert arguments
+    - `tinyframe_write_frame()`: assert arguments
+    - `tinyframe_write_control_stop()`: assert arguments
+    - `tinyframe_set_header()`: assert arguments
+    - Remove `sprintf()` usage from tracing
+
+    c6fbfea Travis, configure
+    ba616b0 Coverage
+    97dfeb7 Coverage
+    f69665b Badges
+    907a894 COPR
+    f07d4e8 Funding
+    242b1b2 Trace
+    8d36cf7 LGTM
+
+ -- Jerry Lundström <lundstrom.jerry@gmail.com>  Thu, 22 Oct 2020 14:11:31 +0200
+
 tinyframe (0.1.0-1~unstable+1) unstable; urgency=low
 
   * Release 0.1.0
