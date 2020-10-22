@@ -1,7 +1,7 @@
 %define sover   0
 %define libname libtinyframe%{sover}
 Name:           tinyframe
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Frame Streams encoder/decoder library
 Group:          Development/Libraries/C and C++
@@ -80,5 +80,26 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 22 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.1-1
+- Release 0.1.1
+  * This release adds a few assert check on augments to some of the function
+    calls, fixes a type in configure and adds coverage tests.
+    - `tinyframe_write_control()`:
+      - assert arguments and content fields data
+      - check for valid content field types
+    - `tinyframe_write_control_start()`: assert arguments
+    - `tinyframe_write_frame()`: assert arguments
+    - `tinyframe_write_control_stop()`: assert arguments
+    - `tinyframe_set_header()`: assert arguments
+    - Remove `sprintf()` usage from tracing
+  * Commits:
+    c6fbfea Travis, configure
+    ba616b0 Coverage
+    97dfeb7 Coverage
+    f69665b Badges
+    907a894 COPR
+    f07d4e8 Funding
+    242b1b2 Trace
+    8d36cf7 LGTM
 * Thu Mar 19 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.0-1
 - Release 0.1.0
