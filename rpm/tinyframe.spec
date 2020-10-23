@@ -83,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 * Thu Oct 22 2020 Jerry Lundström <lundstrom.jerry@gmail.com> 0.1.1-1
 - Release 0.1.1
   * This release adds a few assert check on augments to some of the function
-    calls, fixes a type in configure and adds coverage tests.
+    calls, fixes a typo in configure and adds coverage tests.
     - `tinyframe_write_control()`:
       - assert arguments and content fields data
       - check for valid content field types
