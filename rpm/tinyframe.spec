@@ -28,7 +28,6 @@ Group:          System/Libraries
 Minimalistic library for encoding and decoding the Frame Streams protocol.
 
 %package devel
-BuildArch:      noarch
 Summary:        Frame Streams encoder/decoder library development files
 Group:          Development/Libraries/C and C++
 Requires:       %{libname}%{?_isa} = %{version}
