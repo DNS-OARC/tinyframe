@@ -47,7 +47,6 @@ sh autogen.sh
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %make_install
 
 
