@@ -28,9 +28,10 @@ Group:          System/Libraries
 Minimalistic library for encoding and decoding the Frame Streams protocol.
 
 %package devel
+BuildArch:      noarch
 Summary:        Frame Streams encoder/decoder library development files
 Group:          Development/Libraries/C and C++
-Requires:       %{libname} = %{version}
+Requires:       %{libname}%{?_isa} = %{version}
 
 %description devel
 Minimalistic library for encoding and decoding the Frame Streams protocol.
@@ -43,16 +44,16 @@ Minimalistic library for encoding and decoding the Frame Streams protocol.
 %build
 sh autogen.sh
 %configure
-make %{?_smp_mflags}
+%make_build
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%check
+%make_build test
 
 
 %post -n %{libname}
@@ -64,12 +65,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files -n %{libname}
-%defattr(-,root,root,-)
 %{_libdir}/libtinyframe.so.%{sover}*
 
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/*
 # %{_mandir}/man3/*
 %{_libdir}/libtinyframe.so
