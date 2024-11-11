@@ -30,7 +30,7 @@ Minimalistic library for encoding and decoding the Frame Streams protocol.
 %package devel
 Summary:        Frame Streams encoder/decoder library development files
 Group:          Development/Libraries/C and C++
-Requires:       %{libname}%{?_isa} = %{version}
+Requires:       %{libname}%{?_isa} = %{version}-%{release}
 
 %description devel
 Minimalistic library for encoding and decoding the Frame Streams protocol.
