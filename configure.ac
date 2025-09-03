@@ -1,5 +1,5 @@
 AC_PREREQ(2.61)
-AC_INIT([tinyframe], [0.1.1], [todo@dns-oarc.net], [tinyframe], [https://github.com/DNS-OARC/tinyframe/issues])
+AC_INIT([tinyframe], [0.1.1], [todo@dns-oarc.net], [tinyframe], [https://codeberg.org/DNS-OARC/tinyframe/issues])
 AC_SUBST([TINYFRAME_VERSION_MAJOR], [0000])
 AC_SUBST([TINYFRAME_VERSION_MINOR], [0001])
 AC_SUBST([TINYFRAME_VERSION_PATCH], [0001])

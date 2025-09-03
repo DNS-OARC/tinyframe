@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: tinyframe
-Source: https://github.com/DNS-OARC/tinyframe
+Source: https://codeberg.org/DNS-OARC/tinyframe
 
 Files: *
 Copyright: 2020 OARC, Inc.
