@@ -5,9 +5,9 @@ Maintainer: Jerry Lundström <lundstrom.jerry@gmail.com>
 Build-Depends: debhelper (>= 10), build-essential, automake, autoconf,
  libtool, pkg-config
 Standards-Version: 3.9.4
-Homepage: https://github.com/DNS-OARC/tinyframe
-Vcs-Git: https://github.com/DNS-OARC/tinyframe.git
-Vcs-Browser: https://github.com/DNS-OARC/tinyframe
+Homepage: https://codeberg.org/DNS-OARC/tinyframe
+Vcs-Git: https://codeberg.org/DNS-OARC/tinyframe.git
+Vcs-Browser: https://codeberg.org/DNS-OARC/tinyframe
 
 Package: libtinyframe0
 Architecture: any
